@@ -1,24 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Switch, StyleSheet } from 'react-native';
 
-export const RadioButton = ({ item, setSelectedColors, selectedColors }) => {
+const RadioButton = ({ item, setSelectedColors, selectedColors }) => {
   const [isEnabled, setIsEnabled] = useState(false);
 
-  const toggleSwitch = (selectedColor) => {
-    setIsEnabled(!isEnabled);
+  const toggleSwitch = () => {
+    setIsEnabled((prevstate) => !prevstate);
+  };
+  useEffect(() => {
     if (isEnabled) {
-      setSelectedColors((prevstate) =>
-        selectedColors([selectedColor, ...prevstate]),
-      );
-    } else if (!isEnabled) {
+      setSelectedColors((prevstate) => selectedColors([item, ...prevstate]));
+    } else if (isEnabled === false) {
       const filteredColors = selectedColors.filter((color) => color !== item);
       setSelectedColors(filteredColors);
     }
-  };
+  }, [isEnabled, item, setSelectedColors, selectedColors]);
   return (
     <View style={styles.radioList}>
       <Text>{item.item.colorName}</Text>
-      <Switch value={isEnabled} onValueChange={toggleSwitch(item)} />
+      <Switch value={isEnabled} onValueChange={toggleSwitch} />
     </View>
   );
 };
@@ -33,3 +33,5 @@ const styles = StyleSheet.create({
     paddingLeft: 6,
   },
 });
+
+export default RadioButton;

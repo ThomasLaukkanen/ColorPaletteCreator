@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, FlatList } from 'react-native';
 import COLORS from './constants';
-import { RadioButton } from './radioButton';
+import RadioButton from './RadioButton';
 const ColorPaletteModal = () => {
   const [name, setName] = useState('');
   const [selectedColors, setSelectedColors] = useState([]);
+
   return (
     <View>
       <Text>Name of your Palette</Text>
