@@ -6,18 +6,23 @@ const RadioButton = ({ item, setSelectedColors, selectedColors }) => {
 
   const toggleSwitch = () => {
     setIsEnabled((prevstate) => !prevstate);
+    console.log(item);
+    colorSetter();
   };
-  useEffect(() => {
+  const colorSetter = () => {
     if (isEnabled) {
-      setSelectedColors((prevstate) => selectedColors([item, ...prevstate]));
-    } else if (isEnabled === false) {
-      const filteredColors = selectedColors.filter((color) => color !== item);
-      setSelectedColors(filteredColors);
+      setSelectedColors((prevstate) => setSelectedColors([item, ...prevstate]));
+    } else if (!isEnabled) {
+      const filteredColors = selectedColors.filter(
+        (color) => color.hexCode !== item.hexCode,
+      );
+      setSelectedColors([...filteredColors]);
     }
-  }, [isEnabled, item, setSelectedColors, selectedColors]);
+  };
+
   return (
     <View style={styles.radioList}>
-      <Text>{item.item.colorName}</Text>
+      <Text>{item.colorName}</Text>
       <Switch value={isEnabled} onValueChange={toggleSwitch} />
     </View>
   );

@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, FlatList } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  FlatList,
+  ScrollView,
+} from 'react-native';
 import COLORS from './constants';
 import RadioButton from './RadioButton';
 const ColorPaletteModal = () => {
@@ -8,6 +15,9 @@ const ColorPaletteModal = () => {
 
   return (
     <View>
+      <ScrollView>
+        <Text>{JSON.stringify(selectedColors, null, 2)}</Text>
+      </ScrollView>
       <Text>Name of your Palette</Text>
       <TextInput
         value={name}
@@ -19,7 +29,7 @@ const ColorPaletteModal = () => {
       <FlatList
         data={COLORS}
         keyExtractor={(item) => item.colorName}
-        renderItem={(item) => (
+        renderItem={({ item }) => (
           <RadioButton
             item={item}
             setSelectedColors={setSelectedColors}
