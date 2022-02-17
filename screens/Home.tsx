@@ -2,7 +2,10 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, FlatList, Text, TouchableOpacity } from 'react-native';
 import PalettePreview from '../components/PalettePreview';
 
-function Home({ navigation }) {
+function Home({ navigation, route }) {
+  const newColorPalette = route.params
+    ? route.params.newColorPalette
+    : undefined;
   const [colors, setColors] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const handleFetch = useCallback(async () => {
@@ -30,6 +33,11 @@ function Home({ navigation }) {
     handleFetch();
   }, [handleFetch]);
 
+  useEffect(() => {
+    if (newColorPalette) {
+      setColors((prevstate) => [newColorPalette, ...prevstate]);
+    }
+  }, [newColorPalette]);
   return (
     <FlatList
       style={styles.list}

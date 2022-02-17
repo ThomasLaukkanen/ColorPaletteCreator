@@ -9,12 +9,13 @@ const RadioButton = ({ item, setSelectedColors, selectedColors }) => {
     console.log(item);
     colorSetter();
   };
+
   const colorSetter = () => {
     if (isEnabled) {
       setSelectedColors((prevstate) => setSelectedColors([item, ...prevstate]));
     } else if (!isEnabled) {
       const filteredColors = selectedColors.filter(
-        (color) => color.hexCode !== item.hexCode,
+        (scolor) => scolor.hexCode !== item.hexCode,
       );
       setSelectedColors([...filteredColors]);
     }

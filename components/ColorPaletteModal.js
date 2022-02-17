@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   View,
   Text,
@@ -6,23 +6,37 @@ import {
   StyleSheet,
   FlatList,
   ScrollView,
+  TouchableOpacity,
+  Alert,
 } from 'react-native';
 import COLORS from './constants';
 import RadioButton from './RadioButton';
-const ColorPaletteModal = () => {
+const ColorPaletteModal = ({ navigation }) => {
   const [name, setName] = useState('');
   const [selectedColors, setSelectedColors] = useState([]);
-
+  const handleSubmit = useCallback(() => {
+    if (!name) {
+      Alert.alert('Please enter a palette name');
+    } else if (selectedColors.length < 3) {
+      Alert.alert('Please add atleast 3 colors');
+    } else {
+      const newColorPalette = {
+        paletteName: name,
+        colors: selectedColors,
+      };
+      navigation.navigate('Home', { newColorPalette });
+    }
+  }, [name, selectedColors]);
   return (
-    <View>
+    <View style={styles.container}>
       <ScrollView>
         <Text>{JSON.stringify(selectedColors, null, 2)}</Text>
       </ScrollView>
-      <Text>Name of your Palette</Text>
+      <Text style={styles.paletteName}>Name of your Palette</Text>
       <TextInput
         value={name}
         onChangeText={setName}
-        placeholder={'Name of color palette'}
+        placeholder={'Palette name'}
         style={styles.input}
       />
 
@@ -37,6 +51,9 @@ const ColorPaletteModal = () => {
           />
         )}
       />
+      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+        <Text style={styles.buttonTxt}>Submit</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -45,7 +62,27 @@ const styles = StyleSheet.create({
   input: {
     borderColor: '#000',
     borderWidth: 1,
-    padding: 8,
+    padding: 10,
+    borderRadius: 5,
+    marginBottom: 10,
+  },
+  container: {
+    padding: 10,
+    backgroundColor: 'white',
+    flex: 1,
+  },
+  button: {
+    padding: 20,
+    backgroundColor: '#000',
+    borderRadius: 3,
+  },
+  buttonTxt: {
+    color: 'white',
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+  paletteName: {
+    marginBottom: 6,
   },
 });
 
