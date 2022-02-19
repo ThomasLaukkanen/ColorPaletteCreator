@@ -6,8 +6,10 @@ function Home({ navigation, route }) {
   const newColorPalette = route.params
     ? route.params.newColorPalette
     : undefined;
+  console.log(newColorPalette);
   const [colors, setColors] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
+
   const handleFetch = useCallback(async () => {
     const result = await fetch(
       'https://color-palette-api.kadikraman.now.sh/palettes',
@@ -17,6 +19,7 @@ function Home({ navigation, route }) {
       const palettes = await result.json();
       setColors(palettes);
       setIsRefreshing(false);
+      console.log(palettes);
     }
   }, []);
 
@@ -38,6 +41,7 @@ function Home({ navigation, route }) {
       setColors((prevstate) => [newColorPalette, ...prevstate]);
     }
   }, [newColorPalette]);
+
   return (
     <FlatList
       style={styles.list}

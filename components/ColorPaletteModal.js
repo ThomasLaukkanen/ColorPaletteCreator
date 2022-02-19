@@ -5,20 +5,26 @@ import {
   TextInput,
   StyleSheet,
   FlatList,
-  ScrollView,
   TouchableOpacity,
   Alert,
 } from 'react-native';
 import COLORS from './constants';
-import RadioButton from './RadioButton';
+import SwitchButton from './SwitchButton';
 const ColorPaletteModal = ({ navigation }) => {
   const [name, setName] = useState('');
   const [selectedColors, setSelectedColors] = useState([]);
   const handleSubmit = useCallback(() => {
+    console.log(selectedColors);
     if (!name) {
       Alert.alert('Please enter a palette name');
     } else if (selectedColors.length < 3) {
-      Alert.alert('Please add atleast 3 colors');
+      Alert.alert(
+        `Please add atleast ${
+          3 - selectedColors.length < 2
+            ? 'one more color'
+            : 3 - selectedColors.length + ' more colors'
+        }`,
+      );
     } else {
       const newColorPalette = {
         paletteName: name,
@@ -26,12 +32,10 @@ const ColorPaletteModal = ({ navigation }) => {
       };
       navigation.navigate('Home', { newColorPalette });
     }
-  }, [name, selectedColors]);
+  }, [name, selectedColors, navigation]);
+
   return (
     <View style={styles.container}>
-      <ScrollView>
-        <Text>{JSON.stringify(selectedColors, null, 2)}</Text>
-      </ScrollView>
       <Text style={styles.paletteName}>Name of your Palette</Text>
       <TextInput
         value={name}
@@ -44,7 +48,7 @@ const ColorPaletteModal = ({ navigation }) => {
         data={COLORS}
         keyExtractor={(item) => item.colorName}
         renderItem={({ item }) => (
-          <RadioButton
+          <SwitchButton
             item={item}
             setSelectedColors={setSelectedColors}
             selectedColors={selectedColors}
